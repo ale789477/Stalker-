@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>PDA — S.T.A.L.K.E.R.</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'Courier New',monospace;overflow:hidden}
+    .pda-container{position:relative;width:100%;max-width:600px;height:auto;aspect-ratio:3/4;filter:brightness(1.1)}
+    .status-bar{position:absolute;top:7%;left:5%;width:82%;font-size:13px;color:#fff;text-align:right;text-shadow:0 0 6px #88f,0 0 10px #88f;z-index:1}
+    .screen-text{position:absolute;top:17%;left:12%;width:76%;height:53%;color:#0ff;background:transparent;padding:8px 12px;box-sizing:border-box;overflow-y:auto;font-size:14px;line-height:1.4;text-shadow:0 0 10px #0ff,0 0 16px #0ff,0 0 24px #0ff;z-index:1}
+    .crack-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://i.ibb.co/DgjF7045/image-1768694248349.jpg') no-repeat center;background-size:contain;z-index:2;pointer-events:none;opacity:0.65}
+    .center-button{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:3;pointer-events:all;background:transparent}
+    .center-button.active{box-shadow:0 0 20px 8px rgba(0,255,255,0.7)}
+  </style>
+</head>
+<body>
+<div class="pda-container">
+  <div class="status-bar" id="statusBar"></div>
+  <div class="screen-text" id="screenContent"></div>
+  <div class="crack-overlay"></div>
+  <div class="center-button" id="centerBtn"></div>
+</div>
+<script>
+function updateStatusBar(){const now=new Date();const time=now.toLocaleTimeString('uk-UA',{hour12:false,hour:'2-digit',minute:'2-digit'});const date=now.toLocaleDateString('uk-UA');const battery=Math.floor(Math.random()*20)+75;document.getElementById('statusBar').innerHTML=`[${time}] ${date} | 🔋 ${battery}%`;}
+setInterval(updateStatusBar,1000);updateStatusBar();
+const states=[
+`<h3 style="color:#0ff;text-shadow:0 0 8px #0ff,0 0 14px #0ff;">ЛОКАЦІЯ</h3><p>— Зона відчуження<br>— Лабораторія X-16</p><p style="color:#aff;font-size:11px;">[GPS: 42.7°N, 37.5°E]</p><p style="margin-top:20px;">Рівень радіації: <span style="color:#ff5">середній</span><br>Статус: <span style="color:#0ff">онлайн</span></p>`,
+`<h3 style="color:#0ff;text-shadow:0 0 8px #0ff,0 0 14px #0ff;">ЗАВДАННЯ</h3><p>• Поставити вподобайку<br>• Підписатися на YouTube канал<br>• Залишити коментар</p>`,
+`<h3 style="color:#0ff;text-shadow:0 0 8px #0ff,0 0 14px #0ff;">ІНФОРМАЦІЯ</h3><p>ПДА v2.1.7<br>Батарея: див. верхній рядок<br>Зв'язок: стабільний<br>Останнє оновлення: 02:14</p>`
+];
+let screenState=0;
+const screenContent=document.getElementById('screenContent');
+const centerBtn=document.getElementById('centerBtn');
+centerBtn.addEventListener('click',()=>{
+  centerBtn.classList.add('active');
+  screenState=(screenState+1)%states.length;
+  screenContent.innerHTML=states[screenState];
+  setTimeout(()=>centerBtn.classList.remove('active'),300);
+});
+screenContent.innerHTML=states[0];
+</script>
+</body>
+</html>
